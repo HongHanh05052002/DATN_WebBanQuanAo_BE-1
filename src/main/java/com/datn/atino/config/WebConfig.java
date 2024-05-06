@@ -1,6 +1,7 @@
 package com.datn.atino.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -50,6 +51,13 @@ public class WebConfig implements WebMvcConfigurer {
 
         // Thêm các trình chuyển đổi thông điệp khác theo nhu cầu
         // converters.add(new YourCustomMessageConverter());
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer objectMapperBuilderCustomizer() {
+        return jacksonObjectMapperBuilder -> {
+            // Customize the ObjectMapper while maintaining the auto-configuration
+        };
     }
 
 }
