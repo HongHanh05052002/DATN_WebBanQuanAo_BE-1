@@ -24,7 +24,12 @@ public class CategoryService {
     }
 
     public PageResponse<List<CategoryEntity>> getAll(PageFilterInput<CategoryEntity> input){
-        Page<CategoryEntity> categoryEntities = categoryRepository.getAll(input, Constants.getPageable(input));
+        Page<CategoryEntity> categoryEntities = categoryRepository.getAll(input, Constants.getPageable(input), false);
+        return new PageResponse<List<CategoryEntity>>().success().data(categoryEntities.getContent()).dataCount(categoryEntities.getTotalElements());
+    }
+
+    public PageResponse<List<CategoryEntity>> getAllParent(PageFilterInput<CategoryEntity> input){
+        Page<CategoryEntity> categoryEntities = categoryRepository.getAll(input, Constants.getPageable(input), true);
         return new PageResponse<List<CategoryEntity>>().success().data(categoryEntities.getContent()).dataCount(categoryEntities.getTotalElements());
     }
 

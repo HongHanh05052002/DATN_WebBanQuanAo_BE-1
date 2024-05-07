@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface CategoryCustomRepository {
 
-    Page<CategoryEntity> getAll(PageFilterInput<CategoryEntity> input, Pageable pageable);
+    Page<CategoryEntity> getAll(PageFilterInput<CategoryEntity> input, Pageable pageable, boolean isParent);
 
 }

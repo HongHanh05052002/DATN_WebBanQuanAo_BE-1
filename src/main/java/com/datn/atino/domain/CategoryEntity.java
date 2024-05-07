@@ -1,7 +1,10 @@
 package com.datn.atino.domain;
 
 
+import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "category")
@@ -23,6 +26,23 @@ public class CategoryEntity extends AbstractAuditingEntity<Integer>{
     @Column(name = "is_active")
     private Boolean isActive = true;
 
+    @Transient
+    private CategoryEntity categoryParent;
+
+    @Transient
+    private List<CategoryEntity> categoryChild;
+
+
+    public CategoryEntity() {
+    }
+
+    @QueryProjection
+    public CategoryEntity(Integer id, String categoryName, Boolean isVisible, CategoryEntity categoryParent) {
+        this.id = id;
+        this.categoryName = categoryName;
+        this.isVisible = isVisible;
+        this.categoryParent = categoryParent;
+    }
 
     @Override
     public Integer getId() {
@@ -63,5 +83,21 @@ public class CategoryEntity extends AbstractAuditingEntity<Integer>{
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public CategoryEntity getCategoryParent() {
+        return categoryParent;
+    }
+
+    public void setCategoryParent(CategoryEntity categoryParent) {
+        this.categoryParent = categoryParent;
+    }
+
+    public List<CategoryEntity> getCategoryChild() {
+        return categoryChild;
+    }
+
+    public void setCategoryChild(List<CategoryEntity> categoryChild) {
+        this.categoryChild = categoryChild;
     }
 }

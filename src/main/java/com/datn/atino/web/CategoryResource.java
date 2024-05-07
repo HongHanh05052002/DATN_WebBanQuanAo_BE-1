@@ -22,6 +22,11 @@ public class CategoryResource {
         return categoryService.getAll(input);
     }
 
+    @PostMapping("/api/category/parent")
+    public PageResponse<List<CategoryEntity>> getAllParent(@RequestBody PageFilterInput<CategoryEntity> input){
+        return categoryService.getAllParent(input);
+    }
+
     @PostMapping("/api/category/save")
     public CommonResponse saveCategory(@RequestBody CategoryEntity category){
         return categoryService.saveCategory(category);
