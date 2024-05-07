@@ -31,6 +31,9 @@ public class ProductEntity extends AbstractAuditingEntity<Integer> {
     @Column(name = "product_form")
     private String productForm;
 
+    @Column(name = "sales")
+    private Integer sales;
+
     @Column(name = "quantity")
     private Integer quantity;
 
@@ -142,5 +145,13 @@ public class ProductEntity extends AbstractAuditingEntity<Integer> {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Integer getSales() {
+        return sales;
+    }
+
+    public void setSales(Integer sales) {
+        this.sales = sales;
     }
 }
