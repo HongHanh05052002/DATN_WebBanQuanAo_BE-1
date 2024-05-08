@@ -4,6 +4,7 @@ package com.datn.atino.domain;
 import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.*;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -32,6 +33,8 @@ public class CategoryEntity extends AbstractAuditingEntity<Integer>{
     @Transient
     private List<CategoryEntity> categoryChild;
 
+    @Transient
+    private List<Instant> updatedAtSearch;
 
     public CategoryEntity() {
     }
@@ -99,5 +102,13 @@ public class CategoryEntity extends AbstractAuditingEntity<Integer>{
 
     public void setCategoryChild(List<CategoryEntity> categoryChild) {
         this.categoryChild = categoryChild;
+    }
+
+    public List<Instant> getUpdatedAtSearch() {
+        return updatedAtSearch;
+    }
+
+    public void setUpdatedAtSearch(List<Instant> updatedAtSearch) {
+        this.updatedAtSearch = updatedAtSearch;
     }
 }

@@ -16,6 +16,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 public class CategoryCustomRepositoryImpl implements CategoryCustomRepository {
@@ -28,7 +29,7 @@ public class CategoryCustomRepositoryImpl implements CategoryCustomRepository {
         QCategoryEntity qCategoryEntity = QCategoryEntity.categoryEntity;
         QCategoryEntity qCategoryEntityParent = new QCategoryEntity("parentId");
         JPAQuery<CategoryEntity> query = new JPAQueryFactory(entityManager)
-                .select(Projections.constructor(CategoryEntity.class, qCategoryEntity.id, qCategoryEntity.categoryName, qCategoryEntity.isVisible, qCategoryEntityParent))
+                .select(Projections.constructor(CategoryEntity.class, qCategoryEntity.id, qCategoryEntity.categoryName, qCategoryEntity.parentId, qCategoryEntity.isVisible, qCategoryEntityParent))
                 .from(qCategoryEntity)
                 .leftJoin(qCategoryEntityParent)
                 .on(qCategoryEntity.parentId.eq(qCategoryEntityParent.id).and(qCategoryEntityParent.isActive.isTrue()));
@@ -52,6 +53,11 @@ public class CategoryCustomRepositoryImpl implements CategoryCustomRepository {
 
         if(StringUtils.hasText(filter.getCategoryName())){
             booleanBuilder.and(qCategoryEntity.categoryName.containsIgnoreCase(filter.getCategoryName()));
+        }
+
+        if(!CollectionUtils.isEmpty(filter.getUpdatedAtSearch())){
+            booleanBuilder.and(qCategoryEntity.updatedAt.goe(filter.getUpdatedAtSearch().get(0)));
+            booleanBuilder.and(qCategoryEntity.updatedAt.loe(filter.getUpdatedAtSearch().get(1)));
         }
 
         if (!StringUtils.isEmpty(input.getSortProperty())) {
