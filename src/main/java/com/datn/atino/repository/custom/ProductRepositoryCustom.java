@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductRepositoryCustom {
 
-    //Page<ProductEntity> getAll(PageFilterInput<ProductDTO> input, Pageable pageable);
+    Page<ProductEntity> getAll(PageFilterInput<ProductDTO> input, Pageable pageable);
 
 }

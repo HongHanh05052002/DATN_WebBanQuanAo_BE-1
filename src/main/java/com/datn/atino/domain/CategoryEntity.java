@@ -40,9 +40,10 @@ public class CategoryEntity extends AbstractAuditingEntity<Integer>{
     }
 
     @QueryProjection
-    public CategoryEntity(Integer id, String categoryName, Boolean isVisible, CategoryEntity categoryParent) {
+    public CategoryEntity(Integer id, String categoryName, Integer parentId, Boolean isVisible, CategoryEntity categoryParent) {
         this.id = id;
         this.categoryName = categoryName;
+        this.parentId = parentId;
         this.isVisible = isVisible;
         this.categoryParent = categoryParent;
     }

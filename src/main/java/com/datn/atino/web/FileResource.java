@@ -6,6 +6,7 @@ import com.datn.atino.service.respone.CommonResponse;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,9 +34,11 @@ public class FileResource {
     @ResponseBody
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
         Resource file = fileStorageService.load(filename);
+
         return ResponseEntity
             .ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+            .header(HttpHeaders.CONTENT_DISPOSITION , "attachment; filename=\"" + file.getFilename() + "\"")
+                .contentType(MediaType.ALL)
             .body(file);
     }
 

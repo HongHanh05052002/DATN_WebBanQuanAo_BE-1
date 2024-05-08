@@ -55,6 +55,10 @@ public class CategoryCustomRepositoryImpl implements CategoryCustomRepository {
             booleanBuilder.and(qCategoryEntity.categoryName.containsIgnoreCase(filter.getCategoryName()));
         }
 
+        if(filter.getParentId() != null){
+            booleanBuilder.and(qCategoryEntity.parentId.eq(filter.getParentId()));
+        }
+
         if(!CollectionUtils.isEmpty(filter.getUpdatedAtSearch())){
             booleanBuilder.and(qCategoryEntity.updatedAt.goe(filter.getUpdatedAtSearch().get(0)));
             booleanBuilder.and(qCategoryEntity.updatedAt.loe(filter.getUpdatedAtSearch().get(1)));

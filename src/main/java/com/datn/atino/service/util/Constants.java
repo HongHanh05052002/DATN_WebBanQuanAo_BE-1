@@ -13,4 +13,10 @@ public class Constants {
         return PageRequest.of(input.getPageNumber(), input.getPageSize());
     }
 
+    public interface EntityType {
+        int PRODUCT = 1;
+
+        int BANNER = 2;
+    }
+
 }

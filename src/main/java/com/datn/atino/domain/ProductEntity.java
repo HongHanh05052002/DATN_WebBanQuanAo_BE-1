@@ -4,6 +4,7 @@ package com.datn.atino.domain;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -48,7 +49,10 @@ public class ProductEntity extends AbstractAuditingEntity<Integer> {
     private Integer isVisible;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    private Boolean isActive = true;
+
+    @OneToMany(mappedBy = "productEntity")
+    private List<ProductImportEntity> productImportEntities;
 
     @Override
     public Integer getId() {
@@ -153,5 +157,13 @@ public class ProductEntity extends AbstractAuditingEntity<Integer> {
 
     public void setSales(Integer sales) {
         this.sales = sales;
+    }
+
+    public List<ProductImportEntity> getProductImportEntities() {
+        return productImportEntities;
+    }
+
+    public void setProductImportEntities(List<ProductImportEntity> productImportEntities) {
+        this.productImportEntities = productImportEntities;
     }
 }
