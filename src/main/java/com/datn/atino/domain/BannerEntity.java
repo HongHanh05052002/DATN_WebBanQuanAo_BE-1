@@ -14,7 +14,7 @@ public class BannerEntity extends AbstractAuditingEntity<Integer>{
     private String imageBanner;
 
     @Column(name = "is_visible")
-    private Boolean isVisible;
+    private Boolean isVisible = true;
 
     @Column(name = "is_active")
     private Boolean isActive = true;

@@ -77,7 +77,6 @@ public class FileStorageService {
                 throw new CustomException(HttpStatus.NOT_FOUND, "Could not read the file!");
             }
         } catch (MalformedURLException e) {
-
             throw new CustomException(HttpStatus.BAD_REQUEST, "Error: " + e.getMessage());
         }
     }
@@ -100,7 +99,6 @@ public class FileStorageService {
             "jfif".equalsIgnoreCase(extension)
         ) {
             headers.setContentType(MediaType.IMAGE_PNG);
-            System.err.println("111: " + file);
         }
 
         return ResponseEntity.ok().headers(headers).body(resource);

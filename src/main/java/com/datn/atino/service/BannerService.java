@@ -32,6 +32,12 @@ public class BannerService {
         bannerRepository.save(bannerEntity);
     }
 
+    public void changeVisible(Integer id){
+        BannerEntity bannerEntity = bannerRepository.findByIdAndIsActiveTrue(id);
+        bannerEntity.setVisible(!bannerEntity.getVisible());
+        bannerRepository.save(bannerEntity);
+    }
+
     public void deleteBanner(Integer id){
         BannerEntity bannerEntity = bannerRepository.findByIdAndIsActiveTrue(id);
         bannerEntity.setActive(false);

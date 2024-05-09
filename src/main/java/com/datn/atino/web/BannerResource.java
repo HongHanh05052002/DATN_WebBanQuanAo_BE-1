@@ -29,6 +29,12 @@ public class BannerResource {
         return new CommonResponse().success();
     }
 
+    @GetMapping("/admin/banner/{id}/change")
+    public CommonResponse changeBanner(@PathVariable Integer id){
+        bannerService.changeVisible(id);
+        return new CommonResponse().success();
+    }
+
     @DeleteMapping("/admin/banner/delete/{id}")
     public CommonResponse deleteBanner(@PathVariable Integer id){
         bannerService.deleteBanner(id);

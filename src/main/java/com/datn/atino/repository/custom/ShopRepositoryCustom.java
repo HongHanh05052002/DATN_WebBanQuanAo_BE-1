@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ShopRepositoryCustom {
 
-    public Page<ShopEntity> getAll(PageFilterInput<ShopEntity> input, Pageable pageable);
+    Page<ShopEntity> getAll(PageFilterInput<ShopEntity> input, Pageable pageable);
 
 }

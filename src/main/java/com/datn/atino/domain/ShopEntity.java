@@ -3,6 +3,9 @@ package com.datn.atino.domain;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
+import java.util.List;
+
 @Entity
 @Table(name = "shop")
 public class ShopEntity extends AbstractAuditingEntity<Integer>{
@@ -21,7 +24,10 @@ public class ShopEntity extends AbstractAuditingEntity<Integer>{
     private String phoneNumber;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    private Boolean isActive = true;
+
+    @Transient
+    private List<Instant> updatedAtSearch;
 
 
     @Override
@@ -63,5 +69,13 @@ public class ShopEntity extends AbstractAuditingEntity<Integer>{
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public List<Instant> getUpdatedAtSearch() {
+        return updatedAtSearch;
+    }
+
+    public void setUpdatedAtSearch(List<Instant> updatedAtSearch) {
+        this.updatedAtSearch = updatedAtSearch;
     }
 }
