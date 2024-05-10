@@ -1,12 +1,14 @@
 package com.datn.atino.repository.custom.impl;
 
 import com.datn.atino.domain.ProductImportEntity;
+import com.datn.atino.domain.QProductEntity;
 import com.datn.atino.domain.QProductImportEntity;
 import com.datn.atino.repository.custom.ProductImportCustom;
 import com.datn.atino.service.model.PageFilterInput;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -26,8 +28,15 @@ public class ProductImportCustomImpl implements ProductImportCustom {
     public Page<ProductImportEntity> getAll(PageFilterInput<ProductImportEntity> input, Pageable pageable) {
         ProductImportEntity filter = input.getFilter();
         QProductImportEntity qProductImportEntity = QProductImportEntity.productImportEntity;
+        QProductEntity qProductEntity = QProductEntity.productEntity;
         JPAQuery<ProductImportEntity> query = new JPAQueryFactory(entityManager)
-                .selectFrom(qProductImportEntity);
+                .select(Projections.constructor(ProductImportEntity.class,
+                        qProductImportEntity.id, qProductEntity, qProductImportEntity.size,
+                        qProductImportEntity.color, qProductImportEntity.quantityImport, qProductImportEntity.updatedAt
+                ))
+                .from(qProductImportEntity)
+                .leftJoin(qProductEntity)
+                .on(qProductImportEntity.productEntity.id.eq(qProductEntity.id));
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         booleanBuilder.and(qProductImportEntity.isActive.isTrue());
@@ -40,7 +49,7 @@ public class ProductImportCustomImpl implements ProductImportCustom {
             );
         }
 
-        if(StringUtils.hasText(filter.getProductEntity().getProductName())){
+        if(filter.getProductEntity() != null && StringUtils.hasText(filter.getProductEntity().getProductName())){
             booleanBuilder.and(qProductImportEntity.productEntity.productName.containsIgnoreCase(filter.getProductEntity().getProductName()));
         }
 

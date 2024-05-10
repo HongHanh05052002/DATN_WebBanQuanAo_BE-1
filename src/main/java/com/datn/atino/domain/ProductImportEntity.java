@@ -1,7 +1,10 @@
 package com.datn.atino.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.time.Instant;
 
 @Entity
 @Table(name = "product_import")
@@ -11,7 +14,7 @@ public class ProductImportEntity extends AbstractAuditingEntity<Integer>{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
 
@@ -27,6 +30,21 @@ public class ProductImportEntity extends AbstractAuditingEntity<Integer>{
     @Column(name = "is_active")
     private Boolean isActive = true;
 
+    @Transient
+    private ProductEntity product;
+
+    public ProductImportEntity (){
+
+    }
+
+    public ProductImportEntity(Integer id, ProductEntity product, String size, String color, Integer quantityImport, Instant updatedAt){
+        this.id = id;
+        this.product = product;
+        this.size = size;
+        this.color = color;
+        this.quantityImport = quantityImport;
+        this.setUpdatedAt(updatedAt);
+    }
 
     @Override
     public Integer getId() {
@@ -53,8 +71,6 @@ public class ProductImportEntity extends AbstractAuditingEntity<Integer>{
         this.size = size;
     }
 
-
-
     public Boolean getActive() {
         return isActive;
     }
@@ -77,5 +93,13 @@ public class ProductImportEntity extends AbstractAuditingEntity<Integer>{
 
     public void setQuantityImport(Integer quantityImport) {
         this.quantityImport = quantityImport;
+    }
+
+    public ProductEntity getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductEntity product) {
+        this.product = product;
     }
 }

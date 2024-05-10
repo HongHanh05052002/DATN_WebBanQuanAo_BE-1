@@ -71,6 +71,7 @@ public class ProductService {
             throw new CustomException(HttpStatus.CONFLICT, "Không tìm thấy bản ghi");
         }
         productMapper.updateForm(productEntityUpdate, product);
+
         productRepository.save(productEntityUpdate);
         fileStorageService.saveDraftFiles(product.getImageDescription(), id, Constants.EntityType.PRODUCT);
     }

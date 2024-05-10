@@ -63,6 +63,7 @@ public class ProductEntity extends AbstractAuditingEntity<Integer> {
     @Column(name = "is_active")
     private Boolean isActive = true;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "productEntity")
     private List<ProductImportEntity> productImportEntities;
 

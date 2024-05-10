@@ -1,5 +1,7 @@
 package com.datn.atino.config;
 
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -34,6 +36,9 @@ public class WebConfig implements WebMvcConfigurer {
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+
+// for Jackson version 2.X
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         // Các tùy chọn tùy chỉnh khác
         return objectMapper;
     }
@@ -50,11 +55,11 @@ public class WebConfig implements WebMvcConfigurer {
             }
         };
     }
-//
+
 //    @Override
 //    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 //        // Xóa tất cả các trình chuyển đổi thông điệp mặc định
-//        converters.clear();
+//        //converters.clear();
 //
 //        // Thêm trình chuyển đổi thông điệp JSON tùy chỉnh (ví dụ: Jackson)
 //        converters.add(new MappingJackson2HttpMessageConverter());
@@ -66,6 +71,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer objectMapperBuilderCustomizer() {
         return jacksonObjectMapperBuilder -> {
+
             // Customize the ObjectMapper while maintaining the auto-configuration
         };
     }

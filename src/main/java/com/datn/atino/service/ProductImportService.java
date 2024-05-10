@@ -77,7 +77,7 @@ public class ProductImportService {
 
         productRepository.save(productEntity);
         input.setProductEntity(productEntity);
-        productImportRepository.save(productImportEntity);
+        productImportRepository.save(input);
     }
 
     @Transactional
