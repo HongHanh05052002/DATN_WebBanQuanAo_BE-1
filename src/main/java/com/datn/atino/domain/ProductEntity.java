@@ -1,6 +1,7 @@
 package com.datn.atino.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -14,6 +15,11 @@ public class ProductEntity extends AbstractAuditingEntity<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "category_id")
+    private CategoryEntity categoryEntity;
+
     @Column(name = "product_name")
     private String productName;
 
@@ -23,8 +29,14 @@ public class ProductEntity extends AbstractAuditingEntity<Integer> {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "material")
+    private String productMaterial;
+
     @Column(name = "price")
     private BigDecimal price;
+
+    @Column(name = "size")
+    private String productSize;
 
     @Column(name = "product_color")
     private String productColor;
@@ -165,5 +177,29 @@ public class ProductEntity extends AbstractAuditingEntity<Integer> {
 
     public void setProductImportEntities(List<ProductImportEntity> productImportEntities) {
         this.productImportEntities = productImportEntities;
+    }
+
+    public String getProductSize() {
+        return productSize;
+    }
+
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
+    }
+
+    public CategoryEntity getCategoryEntity() {
+        return categoryEntity;
+    }
+
+    public void setCategoryEntity(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
+    }
+
+    public String getProductMaterial() {
+        return productMaterial;
+    }
+
+    public void setProductMaterial(String productMaterial) {
+        this.productMaterial = productMaterial;
     }
 }

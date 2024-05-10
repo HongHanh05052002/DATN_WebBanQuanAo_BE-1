@@ -1,6 +1,6 @@
 package com.datn.atino.service.dto;
 
-import jakarta.persistence.Column;
+import com.datn.atino.domain.CategoryEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,13 +11,19 @@ public class ProductDTO {
 
     private String productName;
 
+    private CategoryEntity category;
+
     private String avatar;
 
     private String description;
 
+    private String productMaterial;
+
     private BigDecimal price;
 
-    private String productColor;
+    private List<String> productColor;
+
+    private List<String> productSize;
 
     private String productForm;
 
@@ -32,6 +38,8 @@ public class ProductDTO {
     private Integer isVisible;
 
     private List<FileNameDictionaryDTO> imageDescription;
+
+    private String createdBy;
 
     public Integer getId() {
         return id;
@@ -73,11 +81,11 @@ public class ProductDTO {
         this.price = price;
     }
 
-    public String getProductColor() {
+    public List<String> getProductColor() {
         return productColor;
     }
 
-    public void setProductColor(String productColor) {
+    public void setProductColor(List<String> productColor) {
         this.productColor = productColor;
     }
 
@@ -135,5 +143,37 @@ public class ProductDTO {
 
     public void setImageDescription(List<FileNameDictionaryDTO> imageDescription) {
         this.imageDescription = imageDescription;
+    }
+
+    public List<String> getProductSize() {
+        return productSize;
+    }
+
+    public void setProductSize(List<String> productSize) {
+        this.productSize = productSize;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
+    }
+
+    public String getProductMaterial() {
+        return productMaterial;
+    }
+
+    public void setProductMaterial(String productMaterial) {
+        this.productMaterial = productMaterial;
     }
 }

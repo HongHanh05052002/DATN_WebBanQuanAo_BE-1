@@ -73,6 +73,14 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
             booleanBuilder.and(qProductEntity.sales.like("%" + filter.getSales() + "%"));
         }
 
+        if(StringUtils.hasText(filter.getProductMaterial())){
+            booleanBuilder.and(qProductEntity.productMaterial.containsIgnoreCase(filter.getProductMaterial()));
+        }
+
+        if(filter.getCategory() != null){
+            booleanBuilder.and(qProductEntity.categoryEntity.id.eq(filter.getCategory().getId()));
+        }
+
         if (!StringUtils.isEmpty(input.getSortProperty())) {
             Path<Object> fieldPath = Expressions.path(Object.class, qProductEntity, input.getSortProperty());
             query.orderBy(new OrderSpecifier(input.getSortOrder(), fieldPath));

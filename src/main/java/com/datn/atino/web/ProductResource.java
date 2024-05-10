@@ -26,8 +26,8 @@ public class ProductResource {
     }
 
     @GetMapping("/admin/product/{id}")
-    public ProductDTO getDetail(@PathVariable Integer id){
-        return productService.getDetail(id);
+    public CommonResponse<ProductDTO> getDetail(@PathVariable Integer id){
+        return new CommonResponse<>().success().data(productService.getDetail(id));
     }
 
     @PostMapping("/admin/product/save")

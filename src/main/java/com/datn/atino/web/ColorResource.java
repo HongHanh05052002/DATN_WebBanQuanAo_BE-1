@@ -20,7 +20,7 @@ public class ColorResource {
         this.colorService = colorService;
     }
 
-    @PostMapping("/api/color")
+    @PostMapping("/admin/color")
     public PageResponse<List<ColorEntity>> getAll(@RequestBody PageFilterInput<ColorEntity> input){
         return colorService.getAll(input);
     }

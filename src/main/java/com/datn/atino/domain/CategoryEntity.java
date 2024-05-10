@@ -1,6 +1,7 @@
 package com.datn.atino.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.*;
 
@@ -26,6 +27,10 @@ public class CategoryEntity extends AbstractAuditingEntity<Integer>{
 
     @Column(name = "is_active")
     private Boolean isActive = true;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "categoryEntity")
+//    private List<ProductEntity> productEntities;
 
     @Transient
     private CategoryEntity categoryParent;
@@ -112,4 +117,12 @@ public class CategoryEntity extends AbstractAuditingEntity<Integer>{
     public void setUpdatedAtSearch(List<Instant> updatedAtSearch) {
         this.updatedAtSearch = updatedAtSearch;
     }
+
+//    public List<ProductEntity> getProductEntities() {
+//        return productEntities;
+//    }
+//
+//    public void setProductEntities(List<ProductEntity> productEntities) {
+//        this.productEntities = productEntities;
+//    }
 }

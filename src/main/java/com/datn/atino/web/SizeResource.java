@@ -20,7 +20,7 @@ public class SizeResource {
         this.sizeService = sizeService;
     }
 
-    @PostMapping("/api/size")
+    @PostMapping("/admin/size")
     public PageResponse<List<SizeEntity>> getAll(@RequestBody PageFilterInput<SizeEntity> input){
         return sizeService.getAll(input);
     }

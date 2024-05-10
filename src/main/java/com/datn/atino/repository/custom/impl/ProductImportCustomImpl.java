@@ -56,6 +56,7 @@ public class ProductImportCustomImpl implements ProductImportCustom {
             booleanBuilder.and(qProductImportEntity.quantityImport.like("%" + filter.getQuantityImport() + "%"));
         }
 
+
         if (!StringUtils.isEmpty(input.getSortProperty())) {
             Path<Object> fieldPath = Expressions.path(Object.class, qProductImportEntity, input.getSortProperty());
             query.orderBy(new OrderSpecifier(input.getSortOrder(), fieldPath));
