@@ -1,6 +1,7 @@
 package com.datn.atino.web;
 
 
+import com.datn.atino.domain.FileNameDictionaryEntity;
 import com.datn.atino.service.FileStorageService;
 import com.datn.atino.service.respone.CommonResponse;
 import org.springframework.core.io.ByteArrayResource;
@@ -48,6 +49,13 @@ public class FileResource {
             .success("Tải file lên thành công, hãy thêm mới/cập nhật để ghi nhận!")
             .data(fileStorageService.uploadFile(files));
     }
+
+    @PostMapping("/api/assets/upload-file-one")
+    public FileNameDictionaryEntity uploadFilesOne(@RequestPart("file") MultipartFile files) {
+        return fileStorageService.uploadFile(files);
+    }
+
+
 
 
     @DeleteMapping("/api/assets/delete/{fileName}")

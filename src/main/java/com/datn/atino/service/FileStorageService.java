@@ -126,6 +126,15 @@ public class FileStorageService {
         return fileNameDictionaryRepository.saveAll(entities);
     }
 
+    public FileNameDictionaryEntity uploadFile(MultipartFile file) {
+        String savedFileName = save(file);
+        FileNameDictionaryEntity entity = new FileNameDictionaryEntity();
+        entity.setFileName(file.getOriginalFilename());
+        entity.setSavedFileName(savedFileName);
+        entity.setSize(file.getSize());
+        return fileNameDictionaryRepository.save(entity);
+    }
+
 
     public void replaceFile(MultipartFile file, String filename) {
         try {
