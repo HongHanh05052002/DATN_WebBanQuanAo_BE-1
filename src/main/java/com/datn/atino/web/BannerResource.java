@@ -18,6 +18,12 @@ public class BannerResource {
         this.bannerService = bannerService;
     }
 
+
+    @PostMapping("/banner")
+    private PageResponse<List<BannerEntity>> getBannerUser(@RequestBody PageFilterInput<BannerEntity> input){
+        return bannerService.getAll(input);
+    }
+
     @PostMapping("/admin/banner")
     public PageResponse<List<BannerEntity>> getAll(@RequestBody PageFilterInput<BannerEntity> input){
         return bannerService.getAll(input);

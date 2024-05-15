@@ -23,6 +23,14 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    public List<CategoryEntity> getAllUser(){
+        List<CategoryEntity> result = categoryRepository.findAll();
+        for (CategoryEntity category : result){
+            category.setCategoryChild(categoryRepository.findByParent(category.getId()));
+        }
+        return result;
+    }
+
     public PageResponse<List<CategoryEntity>> getAll(PageFilterInput<CategoryEntity> input){
         Page<CategoryEntity> categoryEntities = categoryRepository.getAll(input, Constants.getPageable(input), false);
         return new PageResponse<List<CategoryEntity>>().success().data(categoryEntities.getContent()).dataCount(categoryEntities.getTotalElements());

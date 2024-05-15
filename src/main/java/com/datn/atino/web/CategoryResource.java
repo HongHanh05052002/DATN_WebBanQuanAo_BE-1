@@ -17,6 +17,12 @@ public class CategoryResource {
         this.categoryService = categoryService;
     }
 
+
+    @GetMapping("/category")
+    public CommonResponse getAllUser(){
+        return new CommonResponse().success().data(categoryService.getAllUser());
+    }
+
     @PostMapping("/admin/category")
     public PageResponse<List<CategoryEntity>> getAll(@RequestBody PageFilterInput<CategoryEntity> input){
         return categoryService.getAll(input);

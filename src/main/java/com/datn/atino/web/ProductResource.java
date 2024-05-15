@@ -20,6 +20,16 @@ public class ProductResource {
     }
 
 
+    @PostMapping("/product")
+    public PageResponse<List<ProductDTO>> getAllUser(@RequestBody PageFilterInput<ProductDTO> input){
+        return productService.getAll(input);
+    }
+
+    @GetMapping("/product/{id}")
+    public CommonResponse<ProductDTO> getDetailUser(@PathVariable Integer id){
+        return new CommonResponse<>().success().data(productService.getDetail(id));
+    }
+
     @PostMapping("/admin/product")
     public PageResponse<List<ProductDTO>> getAll(@RequestBody PageFilterInput<ProductDTO> input){
         return productService.getAll(input);
