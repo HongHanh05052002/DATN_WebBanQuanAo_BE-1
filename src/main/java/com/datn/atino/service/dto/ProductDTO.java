@@ -41,6 +41,14 @@ public class ProductDTO {
 
     private String createdBy;
 
+    public ProductDTO() {
+    }
+
+    public ProductDTO(Integer id, String productName) {
+        this.id = id;
+        this.productName = productName;
+    }
+
     public Integer getId() {
         return id;
     }

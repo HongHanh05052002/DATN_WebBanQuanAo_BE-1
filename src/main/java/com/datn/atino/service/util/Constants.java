@@ -17,6 +17,8 @@ public class Constants {
         int PRODUCT = 1;
 
         int BANNER = 2;
+
+        int COLLECTION = 3;
     }
 
 }
