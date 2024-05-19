@@ -21,12 +21,12 @@ public class BannerResource {
 
     @PostMapping("/banner")
     private PageResponse<List<BannerEntity>> getBannerUser(@RequestBody PageFilterInput<BannerEntity> input){
-        return bannerService.getAll(input);
+        return bannerService.getAll(input, true);
     }
 
     @PostMapping("/admin/banner")
     public PageResponse<List<BannerEntity>> getAll(@RequestBody PageFilterInput<BannerEntity> input){
-        return bannerService.getAll(input);
+        return bannerService.getAll(input, false);
     }
 
     @PostMapping("/admin/banner/save")

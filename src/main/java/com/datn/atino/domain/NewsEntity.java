@@ -21,6 +21,9 @@ public class NewsEntity extends AbstractAuditingEntity<Integer> {
     @Column(name = "author")
     private String author;
 
+    @Column(name = "brief_description")
+    private String briefDescription;
+
     @Column(name = "content")
     private String content;
 
@@ -33,12 +36,13 @@ public class NewsEntity extends AbstractAuditingEntity<Integer> {
     public NewsEntity() {
     }
 
-    public NewsEntity(Integer id, String title, String avatar, String author, Boolean isVisible, Instant createdAt, Instant updatedAt) {
+    public NewsEntity(Integer id, String title, String avatar, String author, String briefDescription, Boolean isVisible, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.title = title;
         this.avatar = avatar;
         this.author = author;
         this.isVisible = isVisible;
+        this.briefDescription = briefDescription;
         this.setCreatedAt(createdAt);
         this.setUpdatedAt(updatedAt);
     }
@@ -98,5 +102,13 @@ public class NewsEntity extends AbstractAuditingEntity<Integer> {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getBriefDescription() {
+        return briefDescription;
+    }
+
+    public void setBriefDescription(String briefDescription) {
+        this.briefDescription = briefDescription;
     }
 }

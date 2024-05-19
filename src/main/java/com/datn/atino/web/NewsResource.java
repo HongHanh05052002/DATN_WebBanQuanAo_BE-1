@@ -20,6 +20,12 @@ public class NewsResource {
         this.newsService = newsService;
     }
 
+
+    @GetMapping("/news")
+    public CommonResponse getNewUser(){
+        return new CommonResponse().success().data(newsService.getNewsUser());
+    }
+
     @PostMapping("/admin/news")
     public PageResponse<List<NewsEntity>> getAll(@RequestBody PageFilterInput<NewsEntity> input){
         return newsService.getAll(input);

@@ -81,7 +81,7 @@ public class CollectionService {
 
     public void updateCollection(Integer id, CollectionEntity collectionEntity){
         CollectionEntity collection = collectionRepository.findByIdAndIsActiveTrue(id);
-        if(collection == null) throw new CustomException(HttpStatus.NOT_FOUND, "Koông tìm thấy bản ghi");
+        if(collection == null) throw new CustomException(HttpStatus.NOT_FOUND, "Không tìm thấy bản ghi");
         collectionEntity.setId(id);
         collectionRepository.save(collectionEntity);
         List<CollectionProductEntity> list = collectionProductRepository.findByIdCollection(id);

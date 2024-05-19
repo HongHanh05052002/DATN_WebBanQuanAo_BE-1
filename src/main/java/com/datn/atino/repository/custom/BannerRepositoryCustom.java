@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface BannerRepositoryCustom {
 
-    Page<BannerEntity> getAll(PageFilterInput<BannerEntity> input, Pageable pageable);
+    Page<BannerEntity> getAll(PageFilterInput<BannerEntity> input, Pageable pageable, boolean isUser);
 
 }

@@ -31,6 +31,7 @@ public class NewsEntityCustomRepositoryImpl implements NewsEntityCustomRepositor
         JPAQuery<NewsEntity> query = new JPAQueryFactory(entityManager)
                 .select(Projections.constructor(NewsEntity.class, qNewsEntity.id,
                         qNewsEntity.title, qNewsEntity.avatar, qNewsEntity.author,
+                        qNewsEntity.briefDescription,
                         qNewsEntity.isVisible,
                         qNewsEntity.createdAt, qNewsEntity.updatedAt))
                 .from(qNewsEntity);
@@ -43,6 +44,10 @@ public class NewsEntityCustomRepositoryImpl implements NewsEntityCustomRepositor
 
         if(StringUtils.hasText(filter.getAuthor())){
             booleanBuilder.and(qNewsEntity.author.containsIgnoreCase(filter.getAuthor()));
+        }
+
+        if(StringUtils.hasText(filter.getBriefDescription())){
+                booleanBuilder.and(qNewsEntity.briefDescription.containsIgnoreCase(filter.getBriefDescription()));
         }
 
         if (!StringUtils.isEmpty(input.getSortProperty())) {

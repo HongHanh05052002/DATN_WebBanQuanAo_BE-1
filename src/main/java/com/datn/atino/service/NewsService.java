@@ -22,6 +22,10 @@ public class NewsService {
         this.newsEntityRepository = newsEntityRepository;
     }
 
+    public List<NewsEntity> getNewsUser(){
+        return newsEntityRepository.getAllNewForUser();
+    }
+
     public PageResponse<List<NewsEntity>> getAll(PageFilterInput<NewsEntity> input){
         Pageable pageable = Constants.getPageable(input);
         Page<NewsEntity> newsEntities = newsEntityRepository.getAll(input, pageable);

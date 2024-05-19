@@ -23,7 +23,7 @@ public class BannerRepositoryCustomImpl implements BannerRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public Page<BannerEntity> getAll(PageFilterInput<BannerEntity> input, Pageable pageable) {
+    public Page<BannerEntity> getAll(PageFilterInput<BannerEntity> input, Pageable pageable, boolean isUser) {
         BannerEntity filter = input.getFilter();
         QBannerEntity qBannerEntity = QBannerEntity.bannerEntity;
 
@@ -32,6 +32,10 @@ public class BannerRepositoryCustomImpl implements BannerRepositoryCustom {
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         booleanBuilder.and(qBannerEntity.isActive.isTrue());
+
+        if(isUser){
+            booleanBuilder.and(qBannerEntity.isVisible.isTrue());
+        }
 
         if (!StringUtils.isEmpty(input.getSortProperty())) {
             Path<Object> fieldPath = Expressions.path(Object.class, qBannerEntity, input.getSortProperty());

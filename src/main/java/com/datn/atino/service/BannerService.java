@@ -22,9 +22,9 @@ public class BannerService {
         this.bannerRepository = bannerRepository;
     }
 
-    public PageResponse<List<BannerEntity>> getAll(PageFilterInput<BannerEntity> input){
+    public PageResponse<List<BannerEntity>> getAll(PageFilterInput<BannerEntity> input, boolean isUser){
         Pageable pageable = Constants.getPageable(input);
-        Page<BannerEntity> bannerEntities = bannerRepository.getAll(input, pageable);
+        Page<BannerEntity> bannerEntities = bannerRepository.getAll(input, pageable, isUser);
         return new PageResponse<List<BannerEntity>>().success().data(bannerEntities.getContent()).dataCount(bannerEntities.getTotalElements());
     }
 

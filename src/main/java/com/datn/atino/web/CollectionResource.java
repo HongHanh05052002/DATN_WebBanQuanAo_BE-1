@@ -20,6 +20,10 @@ public class CollectionResource {
     }
 
 
+    @PostMapping("/collection")
+    public PageResponse<List<CollectionEntity>> getAllUser(@RequestBody PageFilterInput<CollectionEntity> input){
+        return collectionService.getAll(input);
+    }
     @PostMapping("/admin/collection")
     public PageResponse<List<CollectionEntity>> getAll(@RequestBody PageFilterInput<CollectionEntity> input){
         return collectionService.getAll(input);
