@@ -19,4 +19,9 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
             "on c.idProduct = p.id " +
             "where p.isActive = true and c.idCollection = :idCollection")
     List<ProductDTO> findByCollection(@Param("idCollection") Integer idCollection);
+
+    @Query("select new com.datn.atino.service.dto.ProductDTO(p.id, p.productName) from ProductEntity p" +
+            " " +
+            "where p.isActive")
+    List<ProductDTO> findByAllProduct();
 }

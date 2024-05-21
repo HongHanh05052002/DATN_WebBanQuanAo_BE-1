@@ -36,6 +36,11 @@ public class NewsResource {
         return new CommonResponse().success().data(newsService.getDetail(id));
     }
 
+    @GetMapping("/news/{id}")
+    public CommonResponse getDetailUser(@PathVariable Integer id){
+        return new CommonResponse().success().data(newsService.getDetail(id));
+    }
+
     @PostMapping("/admin/news/save")
     public CommonResponse saveNews(@RequestBody NewsEntity input){
         newsService.saveNes(input);
