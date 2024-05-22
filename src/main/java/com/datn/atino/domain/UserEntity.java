@@ -42,7 +42,7 @@ public class UserEntity implements UserDetails {
     private String email;
     @Basic
     @Column(name = "is_active")
-    private Boolean isActive;
+    private Boolean isActive = true;
     @Basic
     @Column(name = "created_at")
     private Instant createdAt;

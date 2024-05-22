@@ -1,12 +1,18 @@
 package com.datn.atino.web;
 
 
+import com.datn.atino.domain.RoleEntity;
 import com.datn.atino.domain.UserEntity;
 import com.datn.atino.service.UserService;
+import com.datn.atino.service.dto.RoleDTO;
+import com.datn.atino.service.dto.UserDTO;
+import com.datn.atino.service.model.PageFilterInput;
 import com.datn.atino.service.respone.CommonResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.datn.atino.service.respone.PageResponse;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserResource {
@@ -21,5 +27,39 @@ public class UserResource {
     public CommonResponse userLogin(@RequestBody UserEntity user){
         return userService.userLogin(user);
     }
+
+    @PostMapping("/admin/user")
+    public PageResponse<List<UserDTO>> getAllAdmin(@RequestBody PageFilterInput<UserDTO> input){
+        return userService.getAllUser(true, input);
+    }
+
+    @PostMapping("/user")
+    public PageResponse<List<UserDTO>> getAllUser(@RequestBody PageFilterInput<UserDTO> input){
+        return userService.getAllUser(false, input);
+    }
+
+    @PostMapping("/user/new")
+    public CommonResponse createUser(@RequestBody UserDTO userDTO){
+        userService.saveUser(userDTO);
+        return new CommonResponse().success();
+    }
+
+    @PutMapping("/user/{userId}")
+    public CommonResponse updateUser(@PathVariable Integer userId, @RequestBody UserDTO input){
+        userService.updateUser(userId, input);
+        return new CommonResponse().success();
+    }
+
+    @GetMapping("/admin/roles")
+    public CommonResponse<List<RoleDTO>> getAllRole(){
+        return new CommonResponse<>().success().data(userService.getAllRole());
+    }
+
+
+    @GetMapping("/admin/{userName}/roles")
+    public CommonResponse<List<String>> getAllRoleByUserName(@PathVariable String userName){
+        return new CommonResponse<>().success().data(userService.getRoleNameByUserName(userName));
+    }
+
 
 }

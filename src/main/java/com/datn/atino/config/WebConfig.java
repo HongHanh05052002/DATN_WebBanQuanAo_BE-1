@@ -1,25 +1,22 @@
 package com.datn.atino.config;
 
-import com.fasterxml.jackson.databind.DeserializationConfig;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -33,6 +30,28 @@ public class WebConfig implements WebMvcConfigurer {
 
 
     @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
+
+        return builder -> {
+
+            // formatter
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            // deserializers
+            builder.deserializers(new LocalDateDeserializer(dateFormatter));
+            builder.deserializers(new LocalDateTimeDeserializer(dateTimeFormatter));
+
+            // serializers
+            builder.serializers(new LocalDateSerializer(dateFormatter));
+            builder.serializers(new LocalDateTimeSerializer(dateTimeFormatter));
+        };
+    }
+
+
+
+
+    @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -43,7 +62,7 @@ public class WebConfig implements WebMvcConfigurer {
         return objectMapper;
     }
 
-    @Bean
+    @Bean   
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
