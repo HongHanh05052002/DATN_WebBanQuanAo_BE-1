@@ -4,6 +4,7 @@ package com.datn.atino.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -24,6 +25,9 @@ public class ProductImportEntity extends AbstractAuditingEntity<Integer>{
     @Column(name = "size")
     private String size;
 
+    @Column(name = "price_import")
+    private BigDecimal priceImport;
+
     @Column(name = "quantity_import")
     private Integer quantityImport;
 
@@ -37,12 +41,13 @@ public class ProductImportEntity extends AbstractAuditingEntity<Integer>{
 
     }
 
-    public ProductImportEntity(Integer id, ProductEntity product, String size, String color, Integer quantityImport, Instant updatedAt){
+    public ProductImportEntity(Integer id, ProductEntity product, String size, String color, Integer quantityImport, BigDecimal priceImport, Instant updatedAt){
         this.id = id;
         this.product = product;
         this.size = size;
         this.color = color;
         this.quantityImport = quantityImport;
+        this.priceImport = priceImport;
         this.setUpdatedAt(updatedAt);
     }
 
@@ -101,5 +106,13 @@ public class ProductImportEntity extends AbstractAuditingEntity<Integer>{
 
     public void setProduct(ProductEntity product) {
         this.product = product;
+    }
+
+    public BigDecimal getPriceImport() {
+        return priceImport;
+    }
+
+    public void setPriceImport(BigDecimal priceImport) {
+        this.priceImport = priceImport;
     }
 }

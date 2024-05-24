@@ -4,12 +4,16 @@ package com.datn.atino.web;
 import com.datn.atino.domain.RoleEntity;
 import com.datn.atino.domain.UserEntity;
 import com.datn.atino.service.UserService;
+import com.datn.atino.service.dto.ChangePasswordDTO;
 import com.datn.atino.service.dto.RoleDTO;
 import com.datn.atino.service.dto.UserDTO;
 import com.datn.atino.service.model.PageFilterInput;
 import com.datn.atino.service.respone.CommonResponse;
 import com.datn.atino.service.respone.PageResponse;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,6 +64,19 @@ public class UserResource {
     public CommonResponse<List<String>> getAllRoleByUserName(@PathVariable String userName){
         return new CommonResponse<>().success().data(userService.getRoleNameByUserName(userName));
     }
+
+    @GetMapping("/admin/delete/{userId}")
+    public CommonResponse deleteUser(@PathVariable Integer userId){
+        userService.deleteUser(userId);
+        return new CommonResponse().success();
+    }
+
+    @PostMapping("/admin/change-password/{userId}")
+    public CommonResponse changePassword(@PathVariable Integer userId, @RequestBody ChangePasswordDTO input){
+        userService.changePassword(userId, input);
+        return new CommonResponse().success();
+    }
+
 
 
 }

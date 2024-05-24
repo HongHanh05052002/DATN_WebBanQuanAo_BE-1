@@ -5,16 +5,21 @@ import com.datn.atino.domain.RoleEntity;
 import com.datn.atino.domain.UserEntity;
 import com.datn.atino.repository.RoleRepository;
 import com.datn.atino.repository.UserRepository;
+import com.datn.atino.service.dto.ChangePasswordDTO;
 import com.datn.atino.service.dto.RoleDTO;
 import com.datn.atino.service.dto.UserDTO;
+import com.datn.atino.service.exception.CustomException;
 import com.datn.atino.service.model.PageFilterInput;
 import com.datn.atino.service.respone.CommonResponse;
 import com.datn.atino.service.respone.PageResponse;
 import com.datn.atino.service.util.Constants;
-import jakarta.persistence.Column;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -23,7 +28,7 @@ import java.time.Instant;
 import java.util.*;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -43,16 +48,20 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     public CommonResponse userLogin(UserEntity input){
         UserEntity user = userRepository.findByUsernameAndIsActiveTrue(input.getUsername());
+        //user.setRoleEntities(roleRepository.readAllBy(input.getUsername()));
         if(user == null) return new CommonResponse().result("403","Thông tin mật khẩu không chính xác", false);
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-            );
+
         } catch (Exception ex){
-            return new CommonResponse().result("403","Thông tin mật khẩu không chính xác", false);
+            return new CommonResponse().result("403", ex.getMessage(), false);
+
         }
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(input.getUsername(), input.getPassword())
+        );
         String jwtToken = jwtService.generateToken(user);
         UserDTO userDTO = new UserDTO();
         userDTO.setUserName(user.getUsername());
@@ -69,6 +78,7 @@ public class UserService {
         List<UserDTO> result = new ArrayList<>();
         for (UserEntity user : userEntities.getContent()){
             UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
             userDTO.setUserName(user.getUsername());
             userDTO.setEmail(user.getEmail());
             userDTO.setPhoneNumber(user.getPhoneNumber());
@@ -141,5 +151,30 @@ public class UserService {
         return roleRepository.findRoleNameByUserName(userName);
     }
 
+    public void deleteUser(Integer userId){
+        UserEntity user = userRepository.findByIdAndIsActiveTrue(userId);
+        user.setIsActive(false);
+        userRepository.save(user);
+    }
+
+    public void changePassword(Integer userId, ChangePasswordDTO changePassword){
+        UserEntity user = userRepository.findByIdAndIsActiveTrue(userId);
+        if(!changePassword.getNewPassword().equals(changePassword.getConfirmNewPassword())){
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Mật khẩu không khớp");
+        }
+        System.err.println(changePassword.getNewPassword() + ": " + passwordEncoder.encode(changePassword.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
+        userRepository.save(user);
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        UserEntity user = userRepository.findByUsernameAndIsActiveTrue(username);
+
+        // Converting userDetail to UserDetails
+        return user;
+    }
 
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 public class UserDTO {
+
+    private Integer id;
     private String userName;
     private String email;
     private String phoneNumber;
@@ -91,5 +93,13 @@ public class UserDTO {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -32,7 +32,7 @@ public class ProductImportCustomImpl implements ProductImportCustom {
         JPAQuery<ProductImportEntity> query = new JPAQueryFactory(entityManager)
                 .select(Projections.constructor(ProductImportEntity.class,
                         qProductImportEntity.id, qProductEntity, qProductImportEntity.size,
-                        qProductImportEntity.color, qProductImportEntity.quantityImport, qProductImportEntity.updatedAt
+                        qProductImportEntity.color, qProductImportEntity.quantityImport, qProductImportEntity.priceImport, qProductImportEntity.updatedAt
                 ))
                 .from(qProductImportEntity)
                 .leftJoin(qProductEntity)

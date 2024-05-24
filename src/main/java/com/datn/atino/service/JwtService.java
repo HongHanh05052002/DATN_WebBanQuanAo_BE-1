@@ -1,8 +1,10 @@
 package com.datn.atino.service;
 
 
+import com.datn.atino.domain.RoleEntity;
 import com.datn.atino.domain.UserEntity;
 import com.datn.atino.repository.UserRepository;
+import com.datn.atino.service.dto.RoleDTO;
 import com.datn.atino.service.dto.UserDTO;
 import com.datn.atino.service.exception.CustomException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,9 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -56,21 +56,31 @@ public class JwtService {
     public String generateToken(UserEntity user){
         Map<String, Object> claims = new HashMap<>();
         String jsonUserCustom = "";
-
+        UserEntity userCustom = new UserEntity();
+        UserDTO userDTO = new UserDTO();
         try {
-            UserEntity userCustom =
+                userCustom =
                     userRepository.findByUsernameAndIsActiveTrue(user.getUsername());
             if(userCustom == null) throw new CustomException(HttpStatus.NOT_FOUND, "Không tìm thấy tài khoản");
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUserName(userCustom.getUsername());
 
+            userDTO.setUserName(userCustom.getUsername());
+            userDTO.setEmail(userCustom.getEmail());
+            userDTO.setPhoneNumber(userCustom.getPhoneNumber());
+            Set<RoleDTO> roleDTOS = new HashSet<>();
+            for (RoleEntity role: userCustom.getRoleEntities()){
+                RoleDTO roleDTO = new RoleDTO();
+                roleDTO.setId(role.getId());
+                roleDTO.setName(role.getName());
+                roleDTOS.add(roleDTO);
+            }
+            userDTO.setRoles(roleDTOS);
             jsonUserCustom = convertObjectToJson(userDTO);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
         }
 
         claims.put("user", jsonUserCustom);
-        return generateToken(claims, user);
+        return generateToken(claims, userCustom);
     }
     public String generateToken(Map<String, Object> extraClaims, UserEntity user){
         return Jwts.builder()

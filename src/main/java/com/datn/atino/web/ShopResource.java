@@ -24,6 +24,11 @@ public class ShopResource {
         return shopService.getAll(input);
     }
 
+    @PostMapping("/shop")
+    public PageResponse<List<ShopEntity>> getAllUser(@RequestBody PageFilterInput<ShopEntity> input){
+        return shopService.getAll(input);
+    }
+
     @PostMapping("/admin/shop/save")
     public CommonResponse saveShop(@RequestBody ShopEntity shopEntity){
         shopService.saveShop(shopEntity);

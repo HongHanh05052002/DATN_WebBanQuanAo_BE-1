@@ -1,5 +1,7 @@
 package com.datn.atino.domain;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -50,7 +52,7 @@ public class UserEntity implements UserDetails {
     @Column(name = "update_at")
     private Instant updateAt;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -65,28 +67,29 @@ public class UserEntity implements UserDetails {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true ;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     public void setUsername(String username) {
@@ -101,9 +104,11 @@ public class UserEntity implements UserDetails {
         return simpleGrantedAuthority;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
+
 
     public void setPassword(String password) {
         this.password = password;
