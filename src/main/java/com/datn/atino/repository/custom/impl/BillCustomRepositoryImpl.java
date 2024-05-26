@@ -57,6 +57,10 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
             booleanBuilder.and(qBillEntity.createdBy.eq(filter.getCreatedBy()));
         }
 
+        if(filter.getTotalPrice() != null){
+            booleanBuilder.and(qBillEntity.totalPrice.like("%" + filter.getTotalPrice() + "%"));
+        }
+
         if(filter.getStatus() != null){
             booleanBuilder.and(qBillEntity.status.eq(filter.getStatus()));
         }

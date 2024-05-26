@@ -3,6 +3,7 @@ package com.datn.atino.repository;
 import com.datn.atino.domain.ProductImportEntity;
 import com.datn.atino.repository.custom.ProductImportCustom;
 import com.datn.atino.service.dto.ExpensiveDTO;
+import com.datn.atino.service.dto.ProfitDTO;
 import com.datn.atino.service.dto.RevenueDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +27,6 @@ public interface ProductImportRepository extends JpaRepository<ProductImportEnti
     @Query("select new com.datn.atino.service.dto.ExpensiveDTO(date(b.createdAt), sum(b.priceImport * b.quantityImport)) from ProductImportEntity b where b.isActive = true group by year(b.createdAt), month (b.createdAt) order by b.createdAt asc ")
     List<ExpensiveDTO> getExpensiveForManyMonth();
 
+    @Query("select new com.datn.atino.service.dto.ProfitDTO(month (b.createdAt), year (b.createdAt)) from ProductImportEntity b where b.isActive = true order by b.createdAt asc ")
+    List<ProfitDTO> getAllMonthYear();
 }

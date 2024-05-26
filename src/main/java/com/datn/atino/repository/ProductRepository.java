@@ -24,4 +24,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
             " " +
             "where p.isActive")
     List<ProductDTO> findByAllProduct();
+
 }

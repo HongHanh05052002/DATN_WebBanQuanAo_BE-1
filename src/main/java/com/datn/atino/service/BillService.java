@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -37,8 +38,6 @@ public class BillService {
     private final BillRepository billRepository;
 
     private final ProductBillRepository productBillRepository;
-
-
     private final ProductRepository productRepository;
 
     public BillService(BillRepository billRepository, ProductBillRepository productBillRepository, ProductRepository productRepository) {
@@ -83,6 +82,7 @@ public class BillService {
         billDTO.setEmail(billEntity.getEmail());
         billDTO.setPhoneNumber(billEntity.getPhoneNumber());
         billDTO.setStatus(billEntity.getStatus());
+        billDTO.setPaymentMethod(billEntity.getPaymentMethod());
         List<BillProductEntity> productEntities = productBillRepository.findByBillId(id);
         Map<Integer, ProductDTO> productDTOMap = productRepository.findByAllProduct()
                 .stream()
@@ -106,7 +106,7 @@ public class BillService {
     @Transactional
     public void saveBill(BillDTO input){
         BillEntity billEntity = new BillEntity();
-        billEntity.setBillCode(input.getBillCode());
+        billEntity.setBillCode(autoGenCode());
         billEntity.setCreatedBy(input.getCreatedBy());
         billEntity.setCreatedAt(Instant.now());
         billEntity.setBillNote(input.getBillNote());
@@ -117,6 +117,7 @@ public class BillService {
         billEntity.setStatus(input.getStatus());
         billEntity.setAddress(input.getAddress());
         billEntity.setBillNote(input.getBillNote());
+        billEntity.setPaymentMethod(input.getPaymentMethod());
         billRepository.save(billEntity);
         BigDecimal total = BigDecimal.ZERO;
         if(CollectionUtils.isEmpty(input.getProductBill())) throw new CustomException(HttpStatus.BAD_REQUEST, "Bạn phải chọn sản phẩm");
@@ -142,6 +143,16 @@ public class BillService {
         BillEntity billEntity = billRepository.findByBillId(id);
         billEntity.setStatus(status);
         billRepository.save(billEntity);
+    }
+
+    public String autoGenCode(){
+        String maxCode = billRepository.findMaxCode();
+        long dem = 0;
+        if(StringUtils.hasText(maxCode)){
+            dem = Long.parseLong(maxCode.replace("HD", ""));
+        }
+        dem++;
+        return "HD" + String.format("%3d", dem);
     }
 
 }

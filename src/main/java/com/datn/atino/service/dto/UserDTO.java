@@ -10,6 +10,7 @@ public class UserDTO {
 
     private Integer id;
     private String userName;
+    private String address;
     private String email;
     private String phoneNumber;
     private String firstName;
@@ -20,7 +21,11 @@ public class UserDTO {
 
     private Set<RoleDTO> roles;
 
+    private List<String> listRoleString;
+
     private Instant updatedAt;
+
+    private List<Instant> updatedAtSearch;
 
     public String getUserName() {
         return userName;
@@ -101,5 +106,29 @@ public class UserDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<String> getListRoleString() {
+        return listRoleString;
+    }
+
+    public void setListRoleString(List<String> listRoleString) {
+        this.listRoleString = listRoleString;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public List<Instant> getUpdatedAtSearch() {
+        return updatedAtSearch;
+    }
+
+    public void setUpdatedAtSearch(List<Instant> updatedAtSearch) {
+        this.updatedAtSearch = updatedAtSearch;
     }
 }

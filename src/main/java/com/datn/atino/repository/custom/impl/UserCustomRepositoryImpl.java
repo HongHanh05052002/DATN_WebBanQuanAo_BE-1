@@ -13,6 +13,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 public class UserCustomRepositoryImpl implements UserCustomRepository {
@@ -62,6 +63,12 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
         if(pageable.isPaged()){
             query.offset(pageable.getOffset()).limit(pageable.getPageSize());
+        }
+
+        if(!CollectionUtils.isEmpty(filter.getUpdatedAtSearch())){
+            booleanBuilder
+                    .and(qUserEntity.updateAt.goe(filter.getUpdatedAtSearch().get(0)))
+                    .and(qUserEntity.updateAt.loe(filter.getUpdatedAtSearch().get(1)));
         }
 
         query.where(booleanBuilder);

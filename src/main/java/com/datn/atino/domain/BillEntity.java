@@ -38,6 +38,10 @@ public class BillEntity {
 
     @Column(name = "status")
     private Integer status;
+
+    @Column(name = "payment_method")
+    private Integer paymentMethod;
+
     @Basic
     @Column(name = "created_at")
     private Instant createdAt;
@@ -153,5 +157,13 @@ public class BillEntity {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(Integer paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

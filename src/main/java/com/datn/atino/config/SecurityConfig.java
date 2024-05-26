@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/auth/register").permitAll();
                     auth.requestMatchers("/login").permitAll();
-                    //auth.requestMatchers("/admin/**").hasAuthority("atino_admin");
+                    auth.requestMatchers("/admin/**").hasAuthority("atino_admin");
                     auth.requestMatchers("/**").permitAll();
                     auth.anyRequest().permitAll();
                 })

@@ -42,6 +42,12 @@ public class UserResource {
         return userService.getAllUser(false, input);
     }
 
+    @GetMapping("/user/{username}")
+    public CommonResponse<UserDTO> getDetailUser(@PathVariable String username){
+        return new CommonResponse<>().success().data(userService.getDetail(username));
+    }
+
+
     @PostMapping("/user/new")
     public CommonResponse createUser(@RequestBody UserDTO userDTO){
         userService.saveUser(userDTO);

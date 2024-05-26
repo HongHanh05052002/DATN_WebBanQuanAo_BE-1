@@ -36,6 +36,10 @@ public class UserEntity implements UserDetails {
     @Basic
     @Column(name = "last_name")
     private String lastName;
+
+    @Basic
+    @Column(name = "address")
+    private String address;
     @Basic
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -190,5 +194,13 @@ public class UserEntity implements UserDetails {
 
     public void setRoleEntities(Set<RoleEntity> roleEntities) {
         this.roleEntities = roleEntities;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

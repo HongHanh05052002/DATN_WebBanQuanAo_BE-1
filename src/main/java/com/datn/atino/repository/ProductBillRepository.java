@@ -1,6 +1,7 @@
 package com.datn.atino.repository;
 
 import com.datn.atino.domain.BillProductEntity;
+import com.datn.atino.service.dto.ProfitDTO;
 import com.datn.atino.service.dto.RevenueDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,7 @@ public interface ProductBillRepository extends JpaRepository<BillProductEntity, 
 
     @Query("select new com.datn.atino.service.dto.RevenueDTO(b.createdAt, sum(b.price * b.quantity)) from BillProductEntity b group by year(b.createdAt), month (b.createdAt) order by b.createdAt")
     List<RevenueDTO> getRevenueForManyMonth();
+
+    @Query("select new com.datn.atino.service.dto.ProfitDTO(month (b.createdAt), year (b.createdAt)) from BillProductEntity b order by b.createdAt asc ")
+    List<ProfitDTO> getAllMonthYear();
 }

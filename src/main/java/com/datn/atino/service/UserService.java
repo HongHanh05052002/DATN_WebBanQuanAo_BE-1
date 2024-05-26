@@ -54,14 +54,14 @@ public class UserService implements UserDetailsService {
         //user.setRoleEntities(roleRepository.readAllBy(input.getUsername()));
         if(user == null) return new CommonResponse().result("403","Thông tin mật khẩu không chính xác", false);
         try {
-
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(input.getUsername(), input.getPassword())
+            );
         } catch (Exception ex){
-            return new CommonResponse().result("403", ex.getMessage(), false);
+            return new CommonResponse().result("403", "Thông tin tài khoản mật khẩu không chính xác", false);
 
         }
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(input.getUsername(), input.getPassword())
-        );
+
         String jwtToken = jwtService.generateToken(user);
         UserDTO userDTO = new UserDTO();
         userDTO.setUserName(user.getUsername());
@@ -70,6 +70,7 @@ public class UserService implements UserDetailsService {
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         userDTO.setToken(jwtToken);
+        userDTO.setListRoleString(roleRepository.findRoleNameByUserName(user.getUsername()));
         return new CommonResponse().success().data(userDTO);
     }
 
@@ -96,6 +97,19 @@ public class UserService implements UserDetailsService {
         return new PageResponse<List<UserDTO>>().success().data(result).dataCount(userEntities.getTotalElements());
     }
 
+    public UserDTO getDetail(String userName){
+        UserEntity user = userRepository.findByUsernameAndIsActiveTrue(userName);
+        if(user == null) throw new CustomException(HttpStatus.NOT_FOUND, "Không tìm thấy");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserName(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPhoneNumber(user.getPhoneNumber());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setAddress(user.getAddress());
+        return userDTO;
+    }
+
     public void saveUser(UserDTO userDTO){
         UserEntity user = new UserEntity();
         user.setUsername(userDTO.getUserName());
@@ -103,6 +117,7 @@ public class UserService implements UserDetailsService {
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+        user.setAddress(userDTO.getAddress());
         user.setPassword(passwordEncoder.encode(userDTO.getPassWord()));
         Set<RoleEntity> roleEntities = new HashSet<>();
         if(!CollectionUtils.isEmpty(userDTO.getRoles())){
@@ -116,6 +131,7 @@ public class UserService implements UserDetailsService {
             user.setRoleEntities(roleEntities);
 
         }
+        user.setAddress(userDTO.getAddress());
         user.setUpdateAt(Instant.now());
         user.setCreatedAt(Instant.now());
         userRepository.save(user);

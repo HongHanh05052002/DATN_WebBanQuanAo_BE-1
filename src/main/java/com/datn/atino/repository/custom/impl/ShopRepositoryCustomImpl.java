@@ -15,6 +15,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
@@ -50,6 +51,12 @@ public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
 
         if(StringUtils.hasText(filter.getPhoneNumber())){
             booleanBuilder.and(qShopEntity.phoneNumber.containsIgnoreCase(filter.getPhoneNumber()));
+        }
+
+        if(!CollectionUtils.isEmpty(filter.getUpdatedAtSearch())){
+            booleanBuilder
+                    .and(qShopEntity.updatedAt.goe(filter.getUpdatedAtSearch().get(0)))
+                    .and(qShopEntity.updatedAt.loe(filter.getUpdatedAtSearch().get(1)));
         }
 
         if (!StringUtils.isEmpty(input.getSortProperty())) {

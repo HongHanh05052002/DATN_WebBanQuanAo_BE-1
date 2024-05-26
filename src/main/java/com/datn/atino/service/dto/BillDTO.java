@@ -26,6 +26,8 @@ public class BillDTO {
 
     private Integer status;
 
+    private Integer paymentMethod;
+
     private String createdBy;
 
     private Instant createdAt;
@@ -126,5 +128,13 @@ public class BillDTO {
 
     public void setProductBill(List<ProductBillDTO> productBill) {
         this.productBill = productBill;
+    }
+
+    public Integer getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(Integer paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

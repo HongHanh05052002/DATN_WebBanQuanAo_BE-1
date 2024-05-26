@@ -11,4 +11,7 @@ public interface BillRepository extends JpaRepository<BillEntity, Integer>, Bill
     @Query("select b from BillEntity b where b.id = :id")
     BillEntity findByBillId(@Param("id") Integer id);
 
+    @Query("select max(b.billCode) from BillEntity b")
+    String findMaxCode();
+
 }
