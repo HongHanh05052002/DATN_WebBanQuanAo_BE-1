@@ -3,7 +3,7 @@ package com.datn.atino.service;
 
 import com.datn.atino.domain.BillEntity;
 import com.datn.atino.domain.BillProductEntity;
-import com.datn.atino.domain.ProductEntity;
+import com.datn.atino.domain.NotificationEntity;
 import com.datn.atino.repository.BillRepository;
 import com.datn.atino.repository.ProductBillRepository;
 import com.datn.atino.repository.ProductRepository;
@@ -11,7 +11,6 @@ import com.datn.atino.service.dto.BillDTO;
 import com.datn.atino.service.dto.ProductBillDTO;
 import com.datn.atino.service.dto.ProductDTO;
 import com.datn.atino.service.exception.CustomException;
-import com.datn.atino.service.mapper.ProductMapper;
 import com.datn.atino.service.model.PageFilterInput;
 import com.datn.atino.service.respone.CommonResponse;
 import com.datn.atino.service.respone.PageResponse;
@@ -40,10 +39,13 @@ public class BillService {
     private final ProductBillRepository productBillRepository;
     private final ProductRepository productRepository;
 
-    public BillService(BillRepository billRepository, ProductBillRepository productBillRepository, ProductRepository productRepository) {
+    private final WebSocketService webSocketService;
+
+    public BillService(BillRepository billRepository, ProductBillRepository productBillRepository, ProductRepository productRepository, WebSocketService webSocketService) {
         this.billRepository = billRepository;
         this.productBillRepository = productBillRepository;
         this.productRepository = productRepository;
+        this.webSocketService = webSocketService;
     }
 
     public PageResponse<List<BillDTO>> getAllBill(PageFilterInput<BillDTO> input){
@@ -137,6 +139,11 @@ public class BillService {
         billEntity.setTotalPrice(total);
         billRepository.save(billEntity);
         productBillRepository.saveAll(productEntitiesSave);
+        NotificationEntity notificationEntity = new NotificationEntity();
+        notificationEntity.setTitle("Thông báo đặt hàng");
+        notificationEntity.setContent("Đơn hàng có mã " + billEntity.getBillCode() + " vừa được đặt hàng. Vui lòng xác nhận đơn hàng!");
+        notificationEntity.setRouterLink("./admin/bill/detail/" + billEntity.getId());
+        webSocketService.sendMessage(notificationEntity);
     }
 
     public void changeStatus(Integer id, Integer status){
@@ -151,8 +158,8 @@ public class BillService {
         if(StringUtils.hasText(maxCode)){
             dem = Long.parseLong(maxCode.replace("HD", ""));
         }
-        dem++;
-        return "HD" + String.format("%3d", dem);
+        dem += 1;
+        return "HD" + String.format("%03d", dem);
     }
 
 }

@@ -24,6 +24,12 @@ public class CollectionResource {
     public PageResponse<List<CollectionEntity>> getAllUser(@RequestBody PageFilterInput<CollectionEntity> input){
         return collectionService.getAll(input);
     }
+
+    @GetMapping("/collection/{id}")
+    public CommonResponse<CollectionEntity> getDetailCollection(@PathVariable Integer id){
+        return new CommonResponse<>().success().data(collectionService.getDetail(id));
+    }
+
     @PostMapping("/admin/collection")
     public PageResponse<List<CollectionEntity>> getAll(@RequestBody PageFilterInput<CollectionEntity> input){
         return collectionService.getAll(input);

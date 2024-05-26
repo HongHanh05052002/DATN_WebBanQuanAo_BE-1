@@ -25,4 +25,9 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
             "where p.isActive")
     List<ProductDTO> findByAllProduct();
 
+
+    @Query("select p from ProductEntity p inner join CollectionProductEntity c " +
+            "on c.idProduct = p.id " +
+            "where p.isActive = true and c.idCollection = :idCollection")
+    List<ProductEntity> findEntityByCollection(@Param("idCollection") Integer idCollection);
 }
