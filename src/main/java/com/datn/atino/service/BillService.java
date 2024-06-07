@@ -4,6 +4,7 @@ package com.datn.atino.service;
 import com.datn.atino.domain.BillEntity;
 import com.datn.atino.domain.BillProductEntity;
 import com.datn.atino.domain.NotificationEntity;
+import com.datn.atino.domain.ProductEntity;
 import com.datn.atino.repository.BillRepository;
 import com.datn.atino.repository.ProductBillRepository;
 import com.datn.atino.repository.ProductRepository;
@@ -90,6 +91,7 @@ public class BillService {
                 .stream()
                 .collect(Collectors.toMap(ProductDTO::getId, Function.identity()));
         List<ProductBillDTO> productBillDTOS = new ArrayList<>();
+
         for (BillProductEntity billProductEntity : productEntities){
             ProductBillDTO productBillDTO = new ProductBillDTO();
             productBillDTO.setId(billProductEntity.getId());
@@ -100,7 +102,9 @@ public class BillService {
             productBillDTO.setColor(billProductEntity.getColor());
             productBillDTO.setPrice(billProductEntity.getPrice());
             productBillDTOS.add(productBillDTO);
+
         }
+
         billDTO.setProductBill(productBillDTOS);
         return new CommonResponse().success().data(billDTO);
     }
@@ -122,6 +126,7 @@ public class BillService {
         billEntity.setPaymentMethod(input.getPaymentMethod());
         billRepository.save(billEntity);
         BigDecimal total = BigDecimal.ZERO;
+        List<ProductEntity> productEntities1 = new ArrayList<>();
         if(CollectionUtils.isEmpty(input.getProductBill())) throw new CustomException(HttpStatus.BAD_REQUEST, "Bạn phải chọn sản phẩm");
         List<BillProductEntity> productEntitiesSave = new ArrayList<>();
         for (ProductBillDTO productBillDTO : input.getProductBill()){
@@ -135,14 +140,22 @@ public class BillService {
             productEntity.setPrice(productBillDTO.getPrice());
             productEntitiesSave.add(productEntity);
             total = total.add(productBillDTO.getPrice().multiply(BigDecimal.valueOf(productBillDTO.getQuantity())));
+            ProductEntity productEntity1 = productRepository.findByIdAndIsActiveTrue(productBillDTO.getProduct().getId());
+            productEntity1.setTotalQuantitySales(productEntity1.getTotalQuantitySales() == null ? 0 : productEntity1.getTotalQuantitySales() + productBillDTO.getQuantity());
+            productEntity1.setQuantity(productEntity1.getQuantity() == null ? 0 : productEntity1.getQuantity() - productBillDTO.getQuantity());
+            productEntities1.add(productEntity1);
         }
         billEntity.setTotalPrice(total);
         billRepository.save(billEntity);
+        if(!CollectionUtils.isEmpty(productEntities1)){
+            productRepository.saveAll(productEntities1);
+        }
         productBillRepository.saveAll(productEntitiesSave);
         NotificationEntity notificationEntity = new NotificationEntity();
         notificationEntity.setTitle("Thông báo đặt hàng");
         notificationEntity.setContent("Đơn hàng có mã " + billEntity.getBillCode() + " vừa được đặt hàng. Vui lòng xác nhận đơn hàng!");
         notificationEntity.setRouterLink("./admin/bill/detail/" + billEntity.getId());
+        notificationEntity.setCreatedAt(Instant.now());
         webSocketService.sendMessage(notificationEntity);
     }
 

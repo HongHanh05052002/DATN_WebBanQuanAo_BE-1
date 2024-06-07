@@ -69,7 +69,8 @@ public class BillCustomRepositoryImpl implements BillCustomRepository {
             query.offset(pageable.getOffset()).limit(pageable.getPageSize());
         }
 
-        query.where(booleanBuilder);
+
+        query.where(booleanBuilder).orderBy(qBillEntity.createdAt.desc());
         return new PageImpl<>(query.fetch(), pageable, query.fetchCount());
     }
 }

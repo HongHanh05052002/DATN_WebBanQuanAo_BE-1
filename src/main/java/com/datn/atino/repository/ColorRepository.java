@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ColorRepository extends JpaRepository<ColorEntity, Integer>, ColorRepositoryCustom {
 
-
+    ColorEntity findByIdAndIsActiveTrue(Integer id);
 
 }

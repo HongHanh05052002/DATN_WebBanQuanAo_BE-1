@@ -32,7 +32,7 @@ public class NotificationEntity {
     private String username;
     @Basic
     @Column(name = "createdAt")
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
     public int getId() {
         return id;

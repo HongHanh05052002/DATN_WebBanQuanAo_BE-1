@@ -45,6 +45,10 @@ public class ColorRepositoryCustomImpl implements ColorRepositoryCustom {
             query.orderBy(new OrderSpecifier(input.getSortOrder(), fieldPath));
         }
 
+        if(pageable.isPaged()){
+            query.offset(pageable.getOffset()).limit(pageable.getPageSize());
+        }
+
         query.where(booleanBuilder);
 
         return new PageImpl<>(query.fetch(), pageable, query.fetchCount());

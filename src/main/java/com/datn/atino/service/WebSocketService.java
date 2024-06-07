@@ -29,7 +29,9 @@ public class WebSocketService {
         List<UserEntity> userEntities = userRepository.findUserByRole("atino_admin");
         for(UserEntity user : userEntities){
             notificationEntity.setUsername(user.getUsername());
-            simpMessagingTemplate.convertAndSend("/" + user.getUsername(), notificationEntity);
+            String topic = "/topic/" + user.getUsername();
+            System.err.println(topic);
+            simpMessagingTemplate.convertAndSend(topic, notificationEntity);
             notificationRepository.save(notificationEntity);
         }
     }

@@ -74,6 +74,7 @@ public class CollectionService {
         for (ProductEntity productEntity : productEntities){
             productDTOS.add(productMapper.toDTO(productEntity));
         }
+        collection.setFiles(fileStorageService.getAllByEntity(id, Constants.EntityType.COLLECTION));
         if(!CollectionUtils.isEmpty(productDTOS)){
             collection.setProducts(productDTOS);
         }

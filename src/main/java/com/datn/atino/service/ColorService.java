@@ -27,4 +27,18 @@ public class ColorService {
         Page<ColorEntity> sizeEntities = colorRepository.getAll(input, pageable);
         return new PageResponse<List<ColorEntity>>().success().dataCount(sizeEntities.getTotalElements()).data(sizeEntities.getContent());
     }
+
+    public void saveColor(ColorEntity input){
+        colorRepository.save(input);
+    }
+
+    public void updateColor(ColorEntity input){
+        colorRepository.save(input);
+    }
+
+    public void delete(Integer id){
+        ColorEntity colorEntity = colorRepository.findByIdAndIsActiveTrue(id);
+        colorEntity.setActive(false);
+        colorRepository.save(colorEntity);
+    }
 }

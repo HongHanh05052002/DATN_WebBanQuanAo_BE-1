@@ -26,4 +26,18 @@ public class SizeService {
         return new PageResponse<List<SizeEntity>>().success().dataCount(sizeEntities.getTotalElements()).data(sizeEntities.getContent());
     }
 
+    public void saveSize(SizeEntity input){
+        sizeRepository.save(input);
+    }
+
+    public void updateSize(SizeEntity input){
+        sizeRepository.save(input);
+    }
+
+    public void delete(Integer id){
+        SizeEntity sizeEntity = sizeRepository.findByIdAndIsActiveTrue(id);
+        sizeEntity.setActive(false);
+        sizeRepository.save(sizeEntity);
+    }
+
 }
