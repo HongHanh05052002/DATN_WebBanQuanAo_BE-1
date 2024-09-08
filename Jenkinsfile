@@ -1,19 +1,16 @@
-pipeline {
-    agent any
+node {
+  stage('checkout') {
+          checkout scm
+      }
+      stage('check java') {
+          bat "java -version"
+      }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                // Cấu hình để lấy code từ repository
-                git branch: 'main',
-                    url: 'https://github.com/Dai-Trinh/DATN_WebBanQuanAo_BE.git',
-            }
-        }
-        stage('Build') {
-            steps {
-                // Ví dụ chạy build bằng Maven
-                sh 'mvn clean install'
-            }
-        }
-    }
+      stage('clean') {
+          bat 'set "JAVA_HOME=C:\\Program Files\\Java\\jdk-17" && mvnw -ntp clean -P-webapp'
+      }
+
+      stage('package') {
+          bat 'set "JAVA_HOME=C:\\Program Files\\Java\\jdk-17" && mvnw package'
+      }
 }
