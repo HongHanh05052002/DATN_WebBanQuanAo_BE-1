@@ -7,5 +7,5 @@ services:
     restart: always
     ports:
       - '9092:9091'
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
+    networks:
+      - my_network
