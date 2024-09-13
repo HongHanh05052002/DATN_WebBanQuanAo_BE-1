@@ -4,6 +4,10 @@ services:
     container_name: atino-backend
     build:
       dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3310/datn_atino
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: trinhdai6102
     restart: always
     ports:
       - '9092:9091'
