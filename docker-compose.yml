@@ -11,5 +11,4 @@ services:
     restart: always
     ports:
       - '9092:9091'
-    networks:
-      - my_network
+
