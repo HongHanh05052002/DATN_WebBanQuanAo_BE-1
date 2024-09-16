@@ -71,7 +71,7 @@ public class UserResource {
         return new CommonResponse<>().success().data(userService.getRoleNameByUserName(userName));
     }
 
-    @GetMapping("/admin/delete/{userId}")
+    @DeleteMapping("/admin/delete/{userId}")
     public CommonResponse deleteUser(@PathVariable Integer userId){
         userService.deleteUser(userId);
         return new CommonResponse().success();
